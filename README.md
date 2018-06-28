@@ -4,9 +4,11 @@ This is the code base for our paper [**Novel View Synthesis via Implicit Structu
 
 ## Sample Results
 View synthesis for 12 different car models. Input images are marked with green bounding boxes. Based on each input image, we generate novel views within (+0°,+30°] degrees, with a step of 1°.
+
 <img src='images/car_multi.gif' width=384>
 
 Synthesis OF all 360° views for A car model, with only 6 views as input. Input images are marked with green bounding boxes. Based on each input image, we generate novel views within (-30°,+30°] degrees, with a step of 1°.
+
 <img src='images/car_single.gif' width=384>
 
 ## Prerequisites
