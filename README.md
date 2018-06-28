@@ -1,5 +1,5 @@
 
-# UPG-GAN
+# Novel View Synthesis via Implicit Structure Learning
 This is the code base for our paper [**Novel View Synthesis via Implicit Structure Learning**](todo: add link).We propose an approach to generate novel views of objects from only one view, with fine-grained control over the virtual viewpoints.
 
 ## Sample Results
