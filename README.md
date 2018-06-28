@@ -11,6 +11,7 @@ Synthesis OF all 360° views for A car model, with only 6 views as input. Input 
 
 <img src='images/car_single.gif' width=384>
 
+(Original backgrounds of images are gray. For better visualization the backgrounds are segmented by color thresholding and recolored to white.)
 ## Prerequisites
 - Linux or macOS
 - Python 2 or 3
