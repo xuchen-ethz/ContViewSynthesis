@@ -53,7 +53,7 @@ The test results will be saved to `.gif` files and a html file here: `./results/
 
 ### Data Preparation for Training
 We provide our training dataset which can be accessed as following
-- Download a dataset from our [Google Drive](https://goo.gl/mGykQP).
+- Download a dataset from our [Google Drive](https://goo.gl/4bj6GD).
 - Unzip the dataset under ``./datasets/`` folder.
 
 You can also render your own dataset. todo: describe dataset format.
