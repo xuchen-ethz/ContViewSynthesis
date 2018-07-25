@@ -313,7 +313,7 @@ class AE(nn.Module):
 
         self.enc = nn.Sequential(*enc)
 
-    def forward(self, x, R):
+    def forward(self, x):
         output = self.enc(x)
         output = output / (2*np.pi)
         output = F.tanh(output)
