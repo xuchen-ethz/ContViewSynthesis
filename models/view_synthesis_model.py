@@ -24,14 +24,18 @@ class ViewSynthesisModel(BaseModel):
                          norm_layer=networks.get_norm_layer(norm_type=opt.norm),
                          nl_layer_enc=networks.get_non_linearity(layer_type=opt.nl_enc),
                          nl_layer_dec=networks.get_non_linearity(layer_type=opt.nl_dec),gpu_ids=opt.gpu_ids,nz=opt.nz)
-
+        self.netR = networks.AE(self, opt.input_nc*2, ndf=opt.ngf, n_layers=int(np.log2(opt.fineSize)),  norm_layer=networks.get_norm_layer(norm_type=opt.norm),
+                         nl_layer_enc=networks.get_non_linearity(layer_type=opt.nl_enc), gpu_ids=opt.gpu_ids)
         if len(opt.gpu_ids) > 0:
             self.netG.cuda(opt.gpu_ids[0])
+            self.netR.cuda(opt.gpu_ids[0])
         networks.init_weights(self.netG, init_type="normal")
+        networks.init_weights(self.netR, init_type="normal")
 
 
         if not self.isTrain or opt.continue_train:
             self.load_network(self.netG, 'G', opt.which_epoch)
+            self.load_network(self.netR, 'R', opt.which_epoch)
 
         if self.isTrain:
             self.old_lr = opt.lr
@@ -42,9 +46,10 @@ class ViewSynthesisModel(BaseModel):
             # initialize optimizers
             self.schedulers = []
             self.optimizers = []
-            self.optimizer_G = torch.optim.Adam(itertools.chain(self.netG.parameters()),  #, [self.yaw]
-                                                lr=opt.lr, betas=(opt.beta1, 0.999))
+            self.optimizer_G = torch.optim.Adam(itertools.chain(self.netG.parameters(),self.netR.parameters()), lr=opt.lr, betas=(opt.beta1, 0.999))
+
             self.optimizers.append(self.optimizer_G)
+
             for optimizer in self.optimizers:
                 self.schedulers.append(networks.get_scheduler(optimizer, opt))
 
@@ -70,6 +75,7 @@ class ViewSynthesisModel(BaseModel):
 
         print('---------- Networks initialized -------------')
         networks.print_network(self.netG)
+        networks.print_network(self.netR)
         print('-----------------------------------------------')
 
     def set_input(self, input):
@@ -108,12 +114,15 @@ class ViewSynthesisModel(BaseModel):
         self.real_YawAB= Variable(self.input_YawAB,volatile=True)
         self.real_YawCB = Variable(self.input_YawCB,volatile=True)
 
+        self.pred_YawAB = self.netR( torch.cat([self.real_A, self.real_B],dim=1) ) # [rebuttal]
+
+
         b,c,h,w = self.real_A.size()
         zeros = Variable(torch.zeros((b,1)).cuda() )
 
-        pose_rel = torch.cat( [zeros,zeros,zeros,zeros,-self.real_YawCB, zeros], dim=1)
+        pose_rel = torch.cat( [zeros,zeros,zeros,zeros,-self.pred_YawAB, zeros], dim=1)
 
-        R = rotation_tensor(zeros, zeros, self.real_YawAB).cuda()
+        R = rotation_tensor(zeros, zeros, self.pred_YawAB).cuda()
 
         self.depth = self.netG(self.real_A, R)
         self.depth = self.depth + self.dist

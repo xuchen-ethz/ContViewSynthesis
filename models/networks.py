@@ -289,3 +289,34 @@ class FTAE(nn.Module):
 
         return output
 
+
+class AE(nn.Module):
+    def __init__(self, input_nc, ndf=64, n_layers=7,
+                 norm_layer=None, nl_layer_enc=None, gpu_ids=[]):
+        super(FTAE, self).__init__()
+        self.gpu_ids = gpu_ids
+        kw, padw = 4, 1
+
+        enc = [nn.Conv2d(input_nc, ndf, kernel_size=kw, stride=2, padding=padw), nl_layer_enc()]
+
+        nf_mult = 1
+        for n in range(1, n_layers):
+            nf_mult_prev = nf_mult
+            nf_mult = min(2 ** n, 4)
+            enc += [
+                nn.Conv2d(ndf * nf_mult_prev, ndf * nf_mult,
+                          kernel_size=kw, stride=2, padding=padw)]
+            if norm_layer is not None and n < n_layers - 1:
+                enc += [norm_layer(ndf * nf_mult)]
+                enc += [nl_layer_enc()]
+
+        enc += [nn.Linear(ndf * nf_mult, 1)]
+
+        self.enc = nn.Sequential(*enc)
+
+    def forward(self, x, R):
+        output = self.enc(x)
+        output = output / (2*np.pi)
+        output = F.tanh(output)
+        return output
+

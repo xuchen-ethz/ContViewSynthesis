@@ -46,12 +46,16 @@ class AlignedDatasetMultiView(BaseDataset):
         delta_choices = [2,1,-1,-2]
         idx_C = idx_B + np.random.choice(delta_choices)
 
+        # [rebuttal]
+        idx_A = idx_C
+
         # print idx_A, idx_B, idx_C
         yaw1 = -(idx_B-idx_A) * np.pi/9
         yaw2 = -(idx_B-idx_C) * np.pi/9
         idx_C = np.mod(idx_C,self.nv)
 
-
+        # [rebuttal]
+        idx_A = idx_C
 
         bg_color = (64,64,64)
         A = Image.open(self.paths[idx_A][index]).convert('RGB')
