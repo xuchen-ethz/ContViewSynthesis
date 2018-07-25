@@ -117,6 +117,7 @@ class ViewSynthesisModel(BaseModel):
 
         self.pred_YawAB = self.netR( torch.cat([self.real_A, self.real_B],dim=1) ) # [rebuttal]
 
+        self.loss_R = self.criterionL1(self.real_YawAB,self.pred_YawAB)
 
         b,c,h,w = self.real_A.size()
         zeros = Variable(torch.zeros((b,1)).cuda() )
@@ -187,6 +188,8 @@ class ViewSynthesisModel(BaseModel):
     def get_current_errors(self):
         return OrderedDict([('G_L1', self.loss_G_L1.data[0]),
                             ('TV', self.loss_TV.data[0]),
+                            ('R', self.loss_R.data[0]),
+
                             ])
 
     def get_current_visuals(self):
