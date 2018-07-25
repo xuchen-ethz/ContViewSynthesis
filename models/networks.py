@@ -309,12 +309,12 @@ class AE(nn.Module):
                 enc += [norm_layer(ndf * nf_mult)]
                 enc += [nl_layer_enc()]
 
-        enc += [nn.Linear(ndf * nf_mult, 1)]
-
         self.enc = nn.Sequential(*enc)
+        self.fc = nn.Sequential(*[nn.Linear(ndf * nf_mult, 1)]) #, nn.LeakyReLU(0.2, True),
 
     def forward(self, x):
         output = self.enc(x)
+        output = self.fc(output.view(x.size(0),-1) )
         output = output / (2*np.pi)
         output = F.tanh(output)
         return output
