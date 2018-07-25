@@ -291,8 +291,7 @@ class FTAE(nn.Module):
 
 
 class AE(nn.Module):
-    def __init__(self, input_nc, ndf=64, n_layers=7,
-                 norm_layer=None, nl_layer_enc=None, gpu_ids=[]):
+    def __init__(self, input_nc, ndf=64, n_layers=7, norm_layer=None, nl_layer_enc=None, gpu_ids=[]):
         super(AE, self).__init__()
         self.gpu_ids = gpu_ids
         kw, padw = 4, 1

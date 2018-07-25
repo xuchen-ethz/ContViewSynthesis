@@ -24,7 +24,7 @@ class ViewSynthesisModel(BaseModel):
                          norm_layer=networks.get_norm_layer(norm_type=opt.norm),
                          nl_layer_enc=networks.get_non_linearity(layer_type=opt.nl_enc),
                          nl_layer_dec=networks.get_non_linearity(layer_type=opt.nl_dec),gpu_ids=opt.gpu_ids,nz=opt.nz)
-        self.netR = networks.AE(self, opt.input_nc*2, ndf=64, n_layers=int(np.log2(opt.fineSize)),  norm_layer=networks.get_norm_layer(norm_type=opt.norm),
+        self.netR = networks.AE(self, opt.input_nc*2, ndf=64, n_layers=int(np.log2(opt.fineSize)),  norm_layer=networks.get_norm_layer(norm_type=opt.norm), \
                          nl_layer_enc=networks.get_non_linearity(layer_type=opt.nl_enc), gpu_ids=opt.gpu_ids)
         if len(opt.gpu_ids) > 0:
             self.netG.cuda(opt.gpu_ids[0])
