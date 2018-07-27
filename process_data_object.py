@@ -30,7 +30,7 @@ for root, folders, files in os.walk(rgb_dir):
                     os.makedirs(out_folder)
                 out_path = os.path.join(out_folder, file)
                 cv2.imwrite(out_path, img)
-                cv2.imshow("s",img)
-                cv2.waitKey()
+                # cv2.imshow("s",img)
+                # cv2.waitKey()
 
 
