@@ -213,3 +213,4 @@ class ViewSynthesisModel(BaseModel):
 
     def save(self, label):
         self.save_network(self.netG, 'G', label, self.gpu_ids)
+        self.save_network(self.netR, 'R', label, self.gpu_ids)
