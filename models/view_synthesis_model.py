@@ -113,9 +113,11 @@ class ViewSynthesisModel(BaseModel):
 
         self.real_YawAB= Variable(self.input_YawAB,volatile=True)
         self.real_YawCB = Variable(self.input_YawCB,volatile=True)
-
-        self.pred_YawAB = self.netR( torch.cat([self.real_A, self.real_B],dim=1) ) # [rebuttal]
-
+        if self.opt.pred_R :
+            self.pred_YawAB = self.netR( torch.cat([self.real_A, self.real_B],dim=1) ) # [rebuttal]
+        else:
+            self.pred_YawAB = self.real_YawAB
+    
         self.loss_R = self.criterionL1(self.pred_YawAB,self.real_YawAB)
 
         b,c,h,w = self.real_A.size()

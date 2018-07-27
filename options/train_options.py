@@ -25,4 +25,6 @@ class TrainOptions(BaseOptions):
         self.parser.add_argument('--lambda_tv', type=float, default=1, help='weight for total variation loss')
         self.parser.add_argument('--lambda_recon', type=float, default=10.0, help='weigh for reconstruction loss')
 
+        self.parser.add_argument('--pred_R', action='store_true', help='do not save intermediate training results to [opt.checkpoints_dir]/[opt.name]/web/')
+
         self.isTrain = True
