@@ -36,7 +36,6 @@ class ViewSynthesisModel(BaseModel):
 
         if not self.isTrain or opt.continue_train:
             self.load_network(self.netG, 'G', opt.which_epoch)
-            self.load_network(self.netR, 'R', opt.which_epoch)
 
         if self.isTrain:
             self.old_lr = opt.lr
