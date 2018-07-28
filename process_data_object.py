@@ -3,8 +3,10 @@ import os
 import numpy as np
 rgb_dir="/home/xu/data/png4"
 mask_dir="/home/xu/data/mask4"
-out_dir="/home/xu/data/object"
-t = 255
+out_dir_dense="/home/xu/data/object_new_dense"
+out_dir="/home/xu/data/object_new"
+
+t = 128
 
 for root, folders, files in os.walk(rgb_dir):
     for file in sorted(files):
@@ -21,15 +23,27 @@ for root, folders, files in os.walk(rgb_dir):
 
                 img[mask==0] = 128
                 h,w,c = img.shape
+                img = img[ (h-t)/2:(h+t)/2, (w-t)/2:(w+t)/2, :]
 
-                img = np.pad(img,((0,0),(24,24),(0,0)), 'constant',constant_values=128)
+                # img = np.pad(img,((0,0),(24,24),(0,0)), 'constant',constant_values=128)
 
-                out_folder = os.path.join(out_dir, str(view) )
+                # img = np.pad(img,((0,0),(24,24),(0,0)), 'constant',constant_values=128)
 
-                if not os.path.exists(out_folder):
-                    os.makedirs(out_folder)
-                out_path = os.path.join(out_folder, file)
-                cv2.imwrite(out_path, img)
+                out_folder_dense = os.path.join(out_dir_dense, str(view) )
+
+                if not os.path.exists(out_folder_dense):
+                    os.makedirs(out_folder_dense)
+                out_path_dense = os.path.join(out_folder_dense, file)
+                cv2.imwrite(out_path_dense, img)
+
+                if np.mod(view,20) == 0:
+                    out_folder = os.path.join(out_dir, str(view/20))
+
+                    if not os.path.exists(out_folder_dense):
+                        os.makedirs(out_folder)
+                    output_path= os.path.join(out_folder, file)
+                    cv2.imwrite(output_path, img)
+
                 # cv2.imshow("s",img)
                 # cv2.waitKey()
 
