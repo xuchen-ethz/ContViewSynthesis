@@ -7,10 +7,12 @@ out_dir_dense="/home/xu/data/object_new_dense"
 out_dir="/home/xu/data/object_new"
 
 t = 128
-
+count = 0
 for root, folders, files in os.walk(rgb_dir):
     for file in sorted(files):
         if 'r0.png' in file:
+            if ( int(file.split('_')[0]) > 700 ):
+                continue
             for view in np.arange(0,355,5):
 
                 abs_path = os.path.join(root,file)
@@ -39,7 +41,7 @@ for root, folders, files in os.walk(rgb_dir):
                 if np.mod(view,20) == 0:
                     out_folder = os.path.join(out_dir, str(view/20))
 
-                    if not os.path.exists(out_folder_dense):
+                    if not os.path.exists(out_folder):
                         os.makedirs(out_folder)
                     output_path= os.path.join(out_folder, file)
                     cv2.imwrite(output_path, img)
