@@ -14,7 +14,7 @@ for root, folders, files in os.walk(rgb_dir):
             model_id = int(file.split('_')[0])
             if ( model_id > 700 ):
                 continue
-            for view in np.arange(0,355,5):
+            for view in np.arange(0,360,5):
                 if not np.mod(model_id,7) == 0:
                     if not np.mod(view,20) == 0:
                         continue
