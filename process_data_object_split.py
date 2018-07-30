@@ -36,7 +36,7 @@ for root, folders, files in os.walk(rgb_dir):
 
                 out_folder_dense = os.path.join(out_dir_dense, str(view) )
 
-                if np.mod(model_id,7):
+                if np.mod(model_id,7) == 0:
                     if not os.path.exists(out_folder_dense):
                         os.makedirs(out_folder_dense)
                     out_path_dense = os.path.join(out_folder_dense, file)
