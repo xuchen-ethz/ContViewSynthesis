@@ -26,7 +26,7 @@ for root, folders, files in os.walk(rgb_dir):
                 if view == 0:
                     mask = cv2.imread(abs_path.replace(rgb_dir, mask_dir).replace("r0.png","c1.png"))
                 img_gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
-                img[img_gray<10] = 128
+                img[mask==0] = 128
                 h,w,c = img.shape
                 img = img[ (h-t)/2:(h+t)/2, (w-t)/2:(w+t)/2, :]
 
