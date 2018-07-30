@@ -3,15 +3,16 @@ import os
 import numpy as np
 rgb_dir="/home/xu/data/png4"
 mask_dir="/home/xu/data/mask4"
-out_dir_dense="/home/xu/data/object_new_dense"
-out_dir="/home/xu/data/object_new"
+out_dir_dense="/home/xu/data/view_synthesis/object_dense"
+out_dir="/home/xu/data/view_synthesis/object"
 
 t = 128
 count = 0
 for root, folders, files in os.walk(rgb_dir):
     for file in sorted(files):
         if 'r0.png' in file:
-            if ( int(file.split('_')[0]) > 700 ):
+            model_id = int(file.split('_')[0])
+            if ( model_id > 700 ):
                 continue
             for view in np.arange(0,355,5):
 
@@ -33,20 +34,18 @@ for root, folders, files in os.walk(rgb_dir):
 
                 out_folder_dense = os.path.join(out_dir_dense, str(view) )
 
-                if not os.path.exists(out_folder_dense):
-                    os.makedirs(out_folder_dense)
-                out_path_dense = os.path.join(out_folder_dense, file)
-                cv2.imwrite(out_path_dense, img)
+                if np.mod(model_id,70):
+                    if not os.path.exists(out_folder_dense):
+                        os.makedirs(out_folder_dense)
+                    out_path_dense = os.path.join(out_folder_dense, file)
+                    cv2.imwrite(out_path_dense, img)
 
-                if np.mod(view,20) == 0:
+                elif np.mod(view,20) == 0:
                     out_folder = os.path.join(out_dir, str(view/20))
 
                     if not os.path.exists(out_folder):
                         os.makedirs(out_folder)
                     output_path= os.path.join(out_folder, file)
                     cv2.imwrite(output_path, img)
-
-                cv2.imshow("s",img)
-                cv2.waitKey()
 
 
