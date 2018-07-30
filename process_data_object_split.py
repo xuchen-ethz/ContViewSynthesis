@@ -15,7 +15,9 @@ for root, folders, files in os.walk(rgb_dir):
             if ( model_id > 700 ):
                 continue
             for view in np.arange(0,355,5):
-
+                if not np.mod(model_id,7) == 0:
+                    if not np.mod(view,20) == 0:
+                        continue
                 abs_path = os.path.join(root,file)
                 abs_path = abs_path.replace('_r0.png', '_r%d.png'%view)
                 img = cv2.imread(abs_path)
@@ -34,7 +36,7 @@ for root, folders, files in os.walk(rgb_dir):
 
                 out_folder_dense = os.path.join(out_dir_dense, str(view) )
 
-                if np.mod(model_id,70):
+                if np.mod(model_id,7):
                     if not os.path.exists(out_folder_dense):
                         os.makedirs(out_folder_dense)
                     out_path_dense = os.path.join(out_folder_dense, file)
